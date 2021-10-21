@@ -1,0 +1,48 @@
+@import "./node_modules/bootstrap/scss/bootstrap";
+@import "./node_modules/bootstrap/scss/functions";
+@import "./node_modules/bootstrap/scss/variables";
+@import "./node_modules/bootstrap/scss/mixins";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@100;200;300;400;500&display=swap');
+@import './assets/style/index.scss';
+@import './assets/style/Header.scss';
+@import './assets/style/BookHead.scss';
+@import './assets/style/ViewWords.scss';
+
+
+
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  box-sizing: border-box;
+  height: 100vh;
+  font-family: 'Noto Sans Hebrew', sans-serif;  
+  background-color: #f8f9fd;
+  font-weight: normal;
+  font-style: normal;
+  overflow: hidden;
+}
+.app-container{
+  width: 100%;
+  
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #dee2e6; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #dee2e6; 
+}
