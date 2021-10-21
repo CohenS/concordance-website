@@ -45,44 +45,38 @@ const BookHead = () => {
   const [words, setWords] = useState('');
   
 
-  // const onSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-  //   formData.append("uploadFile", file);
-  //   console.log(formData, "formData");
-  //   try {
-  //     const res = await axios.post(
-  //       `http://localhost:8081/api/files/upload`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //         onUploadProgress: (progressEvent) => {
-  //           setUploadPercentage(
-  //             parseInt(
-  //               Math.round((progressEvent.loaded * 100) / progressEvent.total)
-  //             )
-  //           );
-  //         },
-  //       }
-  //     );
-
-  //     // Clear percentage
-     
-  //   } catch (err) {
-  //     if (err.response.status === 500) {
-  //     } else {
-  //     }
-  //   }
-  // };
-
-   const onSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    praser bookText
+    const formData = new FormData();
+    formData.append("uploadFile", file);
+    console.log(formData, "formData");
+    try {
+      const res = await axios.post(
+        `http://localhost:8081/api/files/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent) => {
+            setUploadPercentage(
+              parseInt(
+                Math.round((progressEvent.loaded * 100) / progressEvent.total)
+              )
+            );
+          },
+        }
+      );
 
+      // Clear percentage
+     
+    } catch (err) {
+      if (err.response.status === 500) {
+      } else {
+      }
+    }
+  };
 
-  ]
 
   useEffect(() => {
     axios.get(`http://localhost:8081/api/files/${5}`).then((response) => {
@@ -120,9 +114,6 @@ const BookHead = () => {
             />
           </form>
         </div>
-        
-        <input type="text" placeholder="Enter book text" onChange={e => setBookText(e.target.value)} />
-        <input type="text" placeholder="words" value={words} />
         <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
 
         {/* <div className="book-content">
