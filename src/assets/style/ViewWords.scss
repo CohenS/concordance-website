@@ -1,0 +1,9 @@
+.view-words{
+    height: 100vh;
+    overflow: hidden;
+    .view-words-container{
+        .results-box{
+            min-height: 65vh;
+        }
+    }
+}
