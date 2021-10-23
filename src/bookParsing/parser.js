@@ -9,22 +9,54 @@ Chapter 2
 
 
 
+const textEndMarkers = [
+    "*** END OF THE PROJECT GUTENBERG",
+    "*** END OF THIS PROJECT GUTENBERG",
+    "***END OF THE PROJECT GUTENBERG",
+    "End of the Project Gutenberg",
+    "End of The Project Gutenberg",
+    "Ende dieses Project Gutenberg",
+    "by Project Gutenberg",
+    "End of Project Gutenberg",
+    "End of this Project Gutenberg",
+    "Ende dieses Projekt Gutenberg",
+    "        ***END OF THE PROJECT GUTENBERG",
+    "*** END OF THE COPYRIGHTED",
+    "End of this is COPYRIGHTED",
+    "Ende dieses Etextes ",
+    "Ende dieses Project Gutenber",
+    "Ende diese Project Gutenberg",
+    "**This is a COPYRIGHTED Project Gutenberg Etext, Details Above**",
+    "Fin de Project Gutenberg",
+    "The Project Gutenberg Etext of ",
+    "Ce document fut presente en lecture",
+    "Ce document fut pr",
+    "More information about this book is at the top of this file.",
+    "We need your donations more than ever!",
+    "END OF PROJECT GUTENBERG",
+    " End of the Project Gutenberg",
+    " *** END OF THIS PROJECT GUTENBERG"
+]
+
 export default parseBookInformation = (book) =>
 {
-    const titleRegex = /Title([^"]*)/
-    const authorRegex = /Author([^"]*)/
-    const illustratorRegex = /Illustrator([^"]*)/
-    const releaseDateRegex = /Release Date([^"]*)/
-    const languageRegex = /Language([^"]*)/
-    const producedByRegex = /Produced by([^"]*)/
-    const chaptersRegex = book.split(/Chapter \d*/).filter(x => x != '');
+    const titleRegex = /Title(.*\s*:\s*.*)/
+    const authorRegex = /Author(.*\s*:\s*.*)/
+    const illustratorRegex = /Illustrator(.*\s*:\s*.*)/
+    const releaseDateRegex = /Release Date(.*\s*:\s*.*)/
+    const languageRegex = /Language(.*\s*:\s*.*)/
+    const producedByRegex = /Produced by(.*\s*:\s*.*)/
 }
 
 export default parseWords = (book) =>
-{
-    const chapters = book.split(/Chapter \d*/).filter(x => x != '');
+{  
+    const chapter1Start = book.lastIndexOf(/Chapter 1\n/);
+    const bookEndIndex = textEndMarkers.map(s => book.findIndex(o => o.i == s)).filter(index => index != -1)[0];
+    const bookChapters = book.substring(chapter1Start, bookEndIndex);
+    
+    const chapters = bookChapters.split(/Chapter \d*/).filter(x => x != '');
 
-    const bookInformation = 
+    const bookWords = 
         chapters
         .map((c,chapterNumber) => 
             c.split(/\n\n/).filter(x => x != '')
@@ -34,6 +66,39 @@ export default parseWords = (book) =>
                     (l.trim().split(" ")
                     .map((w,wordNumber) => ({chapterNumber: chapterNumber, paragraphNumber: paragraphNumber, lineNumber:lineNumber, wordNumber: wordNumber, word:w})))))));
 
-    const words = words.flat(Infinity)
+    const words = bookWords.flat(Infinity)
     return words;
 }
+
+
+function RomanNumeralCharToInt(c){
+    switch (c){
+    case 'I': return 1;
+    case 'V': return 5;
+    case 'X': return 10;
+    case 'L': return 50;
+    case 'C': return 100;
+    case 'D': return 500;
+    case 'M': return 1000;
+    default: return -1;
+    }
+}
+
+function RomanNumeralToInt(str1) {
+    if(str1 == null) return -1;
+    var num = RomanNumeralCharToInt(str1.charAt(0));
+    var pre, curr;
+    
+    for(var i = 1; i < str1.length; i++){
+        curr = RomanNumeralCharToInt(str1.charAt(i));
+        pre = char_toRomanNumeralCharToIntint(str1.charAt(i-1));
+        if(curr <= pre){
+        num += curr;
+        } else {
+        num = num - pre*2 + curr;
+        }
+    }
+    
+    return num;
+    }
+    
