@@ -33,6 +33,14 @@ CREATE TABLE WordPhrase
     FOREIGN KEY  (WordID) REFERENCES Word (WordID)
 );
 
+CREATE TABLE Paragrath
+ (
+    ParagrathID     INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    BookID       INT NOT NULL,
+    ParagarthValue NVARCHAR(MAX) NOT NULL,
+    FOREIGN KEY  (BookID) REFERENCES Book (BookID)
+);
+
 CREATE TABLE BookStat
  (
     BookID           INT NOT NULL PRIMARY KEY,
