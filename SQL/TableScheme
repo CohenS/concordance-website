@@ -40,6 +40,7 @@ CREATE TABLE Paragraph
     BookID       INT NOT NULL,
     ParagarphValue NVARCHAR(MAX) NOT NULL,
     FOREIGN KEY  (BookID) REFERENCES Book (BookID)
+    FOREIGN KEY  (ParagraphInBook) REFERENCES WordInfo (ParagraphInBook)
 );
 
 CREATE TABLE BookStat
