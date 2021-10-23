@@ -1,90 +1,122 @@
--- search words by value
-CREATE OR ALTER PROCEDURE [dbo].[SearchByValue]
-(@wordVlaue varchar(max))
-AS
-BEGIN
-  SELECT *
-  FROM [dbo].[WordInfo] AS [W]
-  WHERE [W].[Length] = LEN(@wordVlaue)
-  AND [W].[Value] = @wordVlaue
-END
-GO
------------------------------------------
--- search words by location
-CREATE OR ALTER PROCEDURE [dbo].[SearchByLocation]
-(
-    @line   INT,
-    @Paragrath INT,
-    @Chapter VARCHAR(3),
-    @wordVlaue varchar(max)
+ -- book values insertion
+CREATE PROCEDURE [dbo].[bookInsert](
+   @BookName varchar(max),
+   @Author varchar(max),
+   @PublisDate datetime,
+   @BookNumChar int
 )
 AS
 BEGIN
-  SELECT *
-  FROM [dbo].[WordInfo] AS [W]
-  WHERE [W].[Line] = @Line
-  AND [W].[Chapter] = @Chapter
-  AND [W].[Value] = @wordVlaue
-END
+   IF NOT EXISTS (SELECT * FROM Book WHERE BookName = @BookName)
+   BEGIN
+       insert into  [dbo].[Book] (BookName,Author,PublishDate,BookNumChar)
+       VALUES (@BookName, @Author, @PublisDate, @BookNumChar);
+   END
+   
+   SELECT @@ROWCOUNT AS Output;
+END;
 GO
-------------------------------------------
--- search words by book
-CREATE  PROCEDURE [dbo].[SearchBybook]
-(@BookID   INT)
+------------------------------------------------------------------------------
+
+-- word values insertion
+CREATE PROCEDURE [dbo].[wordInsert](
+	@wordVlaue varchar(max),
+	@Value varchar(max),
+	@BookID int,
+	@Paragrath int,
+	@Page varchar(4),
+	@Line int,
+	@Sentence int
+)
 AS
 BEGIN
-  SELECT *
-  FROM [dbo].[WordInfo] AS [W]
-  WHERE [W].[BookID] = @BookID
-END
+   
+	DECLARE @WordID INT;
+	IF NOT EXISTS (SELECT * FROM Word WHERE [Value] = @wordVlaue)
+	BEGIN
+		INSERT INTO dbo.Word ([Value],[Length]) VALUES (@Value,LEN(@Value));
+		SET @WordID = @@IDENTITY;
+	END
+	ELSE
+	BEGIN
+		SELECT @WordID=WordID FROM Word WHERE [Value] = @wordVlaue;
+	END
+	-- word information values insertion into WordImfo table
+	INSERT INTO  dbo.WordInfo (BookID,Line,WordID,Paragrath,Page,Sentence)
+	VALUES (@BookID,@Line,@WordId,@Paragrath,@Page,@Sentence);
+	
+	SELECT @@ROWCOUNT AS Output;
+END;
 GO
 
--------------------------------------------
--- search by word group
-CREATE OR ALTER PROCEDURE [dbo].[SearchByGroup]
-(@GroupName VARCHAR(max))
+---------------------------------------------------------------
+-- word gruop values insertion 
+
+
+CREATE PROCEDURE [dbo].[WordGroupInsertion](
+   @GroupID INT,
+   @GroupName varchar(max),
+   @WordID int
+)
 AS
 BEGIN
-  SELECT *
-  FROM [dbo].[WordInfo] 
-  INNER JOIN [dbo].[WordGroup] ON [dbo].[WordInfo].[WordID]=[dbo].[WordGroup].[WordID] 
-  WHERE [dbo].[WordInfo].[Value] = @GroupName
-END
+   IF NOT EXISTS (SELECT * FROM WordGroup WHERE GroupName = @GroupName)
+   BEGIN
+    insert into dbo.wordGroup (GroupID,GroupName,WordID)
+      VALUES (@GroupID,@GroupName, @WordID);
+   END
+   
+   SELECT @@ROWCOUNT AS Output;
+END;
 GO
 
--------------------------------------------
--- search by word phrase 
--- INCOMPLETET
-CREATE OR ALTER PROCEDURE [dbo].[SearchByphrase]
-(@GroupName VARCHAR(max))
+---------------------------------------------------------------
+-- phrase values insertion 
+
+
+CREATE PROCEDURE [dbo].[WordPhraseInsertion](
+   @PhraseID INT,
+   @WordID int,
+   @IndexInPhrase INT
+)
 AS
 BEGIN
-  SELECT *
-  FROM [dbo].[WordInfo] 
-  INNER JOIN [dbo].[WordGroup] ON [dbo].[WordInfo].[WordID]=[dbo].[WordGroup].[WordID] 
-  WHERE [dbo].[WordInfo].[Value] = @GroupName
-END
+   IF NOT EXISTS (SELECT * FROM WordPhrase WHERE PhraseID = @PhraseID)
+   BEGIN
+    insert into dbo.WordPhrase (PhraseID,WordID,InsexInPhrase)
+      VALUES (@PhraseID, null);
+   END
+   
+   SELECT @@ROWCOUNT AS Output;
+END;
 GO
 
--------------------------------------------
--- search by book gener
-CREATE OR ALTER PROCEDURE [dbo].[SearchByGroup]
-(@BookGener VARCHAR(max))
-AS
-BEGIN
-  SELECT *
-  FROM [dbo].[Book] 
-  WHERE [dbo].[Book].[BookGener] = @BookGener
-END
-GO
+---------------------------------------------------------------
+-- stat data insertion 
+--INCOMPLETET
 
 
--------------------------------------------
--- show current stat data
-CREATE OR ALTER PROCEDURE [dbo].[SearchStat]
+CREATE PROCEDURE [dbo].[BookStatInsert](
+   @wTotalWordInBook INT,
+   @wTotalWordInparagrath INT,
+   @wTotalWordInLine INT,
+   @wTotalBookCount INT,
+   @wTotalParagrathCount INT,
+   @wTotalLineCount INT,
+   @WordID int,
+   @IndexInPhrase INT
+)
 AS
 BEGIN
-  SELECT *
-  FROM [dbo].[BookStat] 
-END
+   BEGIN
+    insert into [dbo].[BookStat] ( BookID           INT NOT NULL PRIMARY KEY,
+    AvgCharSentence
+    AvgCharChapter   
+    AvgCharPage      
+    AvgCharBook)
+      VALUES (@PhraseID, null);
+   END
+   
+   SELECT @@ROWCOUNT AS Output;
+END;
 GO
