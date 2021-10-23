@@ -1,5 +1,4 @@
-
-
+ -- book values insertion
 CREATE PROCEDURE [dbo].[bookInsert](
    @BookName varchar(max),
    @Author varchar(max),
@@ -50,11 +49,66 @@ BEGIN
 END;
 GO
 
+---------------------------------------------------------------
+-- word gruop values insertion 
 
--- word gruop values insertion
-insert into dbo.wordGroup (GroupID,GroupName,WordID)
-VALUES (@WordID,@GroupName, null);
 
--- phrase values insertion
-insert into dbo.WordPhrase (PhraseID,WordID)
-VALUES (@PhraseID, null);
+CREATE PROCEDURE [dbo].[WordGroupInsertion](
+   @GroupID INT,
+   @GroupName varchar(max),
+   @WordID int
+)
+AS
+BEGIN
+   IF NOT EXISTS (SELECT * FROM WordGroup WHERE GroupName = @GroupName)
+   BEGIN
+    insert into dbo.wordGroup (GroupID,GroupName,WordID)
+      VALUES (@GroupID,@GroupName, @WordID);
+   END
+   
+   SELECT @@ROWCOUNT AS Output;
+END;
+GO
+
+---------------------------------------------------------------
+-- phrase values insertion 
+
+
+CREATE PROCEDURE [dbo].[WordPhraseInsertion](
+   @PhraseID INT,
+   @WordID int,
+   @IndexInPhrase INT
+)
+AS
+BEGIN
+   IF NOT EXISTS (SELECT * FROM WordPhrase WHERE PhraseID = @PhraseID)
+   BEGIN
+    insert into dbo.WordPhrase (PhraseID,WordID,InsexInPhrase)
+      VALUES (@PhraseID, null);
+   END
+   
+   SELECT @@ROWCOUNT AS Output;
+END;
+GO
+
+---------------------------------------------------------------
+-- stat data insertion 
+--INCOMPLETET
+
+
+CREATE PROCEDURE [dbo].[bookInsert](
+   @PhraseID INT,
+   @WordID int,
+   @IndexInPhrase INT
+)
+AS
+BEGIN
+   IF NOT EXISTS (SELECT * FROM WordGroup WHERE GroupName = @GroupName)
+   BEGIN
+    insert into dbo.WordPhrase (PhraseID,WordID)
+      VALUES (@PhraseID, null);
+   END
+   
+   SELECT @@ROWCOUNT AS Output;
+END;
+GO
