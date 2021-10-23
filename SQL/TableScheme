@@ -58,7 +58,8 @@ CREATE TABLE WordInfo
     BookID           INT NOT NULL,
     Line             INT NOT NULL,
     WordID           INT NOT NULL,
-    Paragraph        INT NOT NULL,
+    ParagraphInBook  INT NOT NULL,
+    Chapter        INT NOT NULL,
 	FOREIGN KEY  (BookID) REFERENCES Book (BookID),
 	FOREIGN KEY  (WordID) REFERENCES Word (WordID)
 );
