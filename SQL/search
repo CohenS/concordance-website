@@ -17,8 +17,8 @@ CREATE  PROCEDURE SearchByLocation
 (
     @line   INT,
     @Paragrath INT,
-    @Chapter VARCHAR(3),
-    @wordVlaue varchar(50)
+    @Chapter VARCHAR(max),
+    @WordID varchar(max)
 )
 AS
 BEGIN
@@ -26,7 +26,7 @@ BEGIN
   FROM [dbo].[WordInfo] AS [W]
   WHERE [W].[Line] == @Line
   AND [W].[Chapter] == @Chapter
-  AND [W].[Value] == @wordVlaue
+  AND [W].[WordID] == @WordID
 )
 ------------------------------------------
 -- search words by book
