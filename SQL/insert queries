@@ -1,50 +1,54 @@
 
 
--- book values insertion
--- Create a new stored procedure called 'insertBook' in schema 'dbo.book'
-CREATE PROCEDURE [dbo].[bookInsert]
-   (@BookID int,
-   @BookName varchar(50),
-   @Author varchar(50),
-   @PublisDate DATETIME 
-   @BookNumChar int)
+CREATE PROCEDURE [dbo].[bookInsert](
+   @BookName varchar(max),
+   @Author varchar(max),
+   @PublisDate datetime,
+   @BookNumChar int
+)
 AS
 BEGIN
-   IF NOT EXISTS (SELECT * FROM Book 
-                   WHERE BookID = @BookID
+   IF NOT EXISTS (SELECT * FROM Book WHERE BookName = @BookName)
    BEGIN
-       insert into  [dbo].[Book] (BookID,BookName,Author,PublishDate,BookNumChar)
-        VALUES (@BookID,@BookName, @Author, @PublisDate, @BookNumChar);
+       insert into  [dbo].[Book] (BookName,Author,PublishDate,BookNumChar)
+       VALUES (@BookName, @Author, @PublisDate, @BookNumChar);
    END
-END
+   
+   SELECT @@ROWCOUNT AS Output;
+END;
+GO
 ------------------------------------------------------------------------------
 
 -- word values insertion
-CREATE PROCEDURE [dbo].[wordInsert]
-(@WordID int,
-@wordVlaue varchar(50),
-@Value varchar(50),
-@BookID int,
-@Paragrath int,
-@chapter varchar(4),
-@Line int)
+CREATE PROCEDURE [dbo].[wordInsert](
+	@wordVlaue varchar(max),
+	@Value varchar(max),
+	@BookID int,
+	@Paragrath int,
+	@Page varchar(4),
+	@Line int,
+	@Sentence int
+)
 AS
 BEGIN
    
-        -- word information values insertion into Word table 
-        BEGIN
-            IF NOT EXISTS (SELECT * FROM Book 
-                   WHERE WordID = @WordID
-            BEGIN
-            insert into dbo.word (wordID,Value,Length)
-            VALUES (@WordID,@Value,LEN(@Value));
-        END
-        -- word information values insertion into WordImfo table
-        insert into dbo.WordInfo (BookID,Line,WordID,Paragrath,Chapter)
-         VALUES (@BookID,null,@WordId,null,null);
-        
-
-END
+	DECLARE @WordID INT;
+	IF NOT EXISTS (SELECT * FROM Word WHERE [Value] = @wordVlaue)
+	BEGIN
+		INSERT INTO dbo.Word ([Value],[Length]) VALUES (@Value,LEN(@Value));
+		SET @WordID = @@IDENTITY;
+	END
+	ELSE
+	BEGIN
+		SELECT @WordID=WordID FROM Word WHERE [Value] = @wordVlaue;
+	END
+	-- word information values insertion into WordImfo table
+	INSERT INTO  dbo.WordInfo (BookID,Line,WordID,Paragrath,Page,Sentence)
+	VALUES (@BookID,@Line,@WordId,@Paragrath,@Page,@Sentence);
+	
+	SELECT @@ROWCOUNT AS Output;
+END;
+GO
 
 
 -- word gruop values insertion
