@@ -6,6 +6,7 @@ CREATE TABLE Book
     Author        VARCHAR(max) NOT NULL,
     PublishDate   DATETIME DEFAULT CURRENT_TIMESTAMP,
     BookNumChar   INT NOT NULL,
+    BookGener     VARCHAR (max),
     UNIQUE(BookName, Author),
 );
 
@@ -28,6 +29,7 @@ CREATE TABLE WordPhrase
  (
     PhraseID     INT NOT NULL PRIMARY KEY IDENTITY(1,1),
     WordID       INT NOT NULL,
+    IndexInPhrase INT NOT NULL,
     FOREIGN KEY  (WordID) REFERENCES Word (WordID)
 );
 
@@ -48,8 +50,6 @@ CREATE TABLE WordInfo
     Line             INT NOT NULL,
     WordID           INT NOT NULL,
     Paragrath        INT NOT NULL,
-    Page             INT NOT NULL,
-    Sentence         INT NOT NULL,
 	FOREIGN KEY  (BookID) REFERENCES Book (BookID),
 	FOREIGN KEY  (WordID) REFERENCES Word (WordID)
 );
