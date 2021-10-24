@@ -3,9 +3,10 @@
 CREATE TABLE BookStat
  (
     BookID           INT NOT NULL PRIMARY KEY,
-    AvgCharSentence  INT NOT NULL,
+    AvgCharLine  INT NOT NULL,
     AvgCharChapter   INT NOT NULL,
-    AvgCharPage      INT NOT NULL,
+    AvgCharParagraph      INT NOT NULL,
     AvgCharBook      INT NOT NULL,
-	FOREIGN KEY  (BookID) REFERENCES Book (BookID)
+	[AvgCharWord] NCHAR(10) NOT NULL, 
+    FOREIGN KEY  (BookID) REFERENCES Book (BookID)
 );

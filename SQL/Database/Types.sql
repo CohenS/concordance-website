@@ -25,10 +25,9 @@ GO;
 CREATE TYPE [Words] AS TABLE
 (
     WordValue VARCHAR(MAX),
-	BookID INT,
 	Paragraph INT,
-	Page INT,
+	Chapter INT,
 	Line INT,
-	Sentence INT
+	WordNumber INT
 );
 GO;

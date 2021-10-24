@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {parseBookInformation, parseWords} from "../bookParsing/parser";
 
 // const handleDrop = files => {
 //   // Push all the axios request promise into a single array
@@ -34,10 +35,18 @@ const BookHead = () => {
   const [filename, setFilename] = useState("Choose File");
   const [uploadedFile, setUploadedFile] = useState({});
   const [getBooks, setBooks] = useState([]);
+  const [comment, setComment] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
 
   const onChange = (e) => {
-    setFile(e.target.files[0]);
+    const fileReader = new FileReader();
+
+    fileReader.onload = async (e) => { 
+      const text = (e.target.result)
+      setFile(text);
+    };
+    
+    fileReader.readAsText(e.target.files[0])
     setFilename(e.target.files[0].name);
   };
 
@@ -47,16 +56,19 @@ const BookHead = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    const words = parseWords(file)
+
+    const bookData = parseBookInformation(file)
+    const insertBookJson = ({Author: bookData.author, BookName: bookData.Bookname, PublishedDate: bookData.publishedDate, Words: words, Paragraphs:[] })
+
     const formData = new FormData();
-    formData.append("uploadFile", file);
-    console.log(formData, "formData");
     try {
       const res = await axios.post(
-        `http://localhost:8081/api/files/upload`,
-        formData,
+        `https://vslrh63ore.execute-api.us-west-2.amazonaws.com/default/`,
+        insertBookJson,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
           },
           onUploadProgress: (progressEvent) => {
             setUploadPercentage(
@@ -114,7 +126,7 @@ const BookHead = () => {
             />
           </form>
         </div>
-        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+        <textarea class="form-control" value={comment} placeholder="Leave a comment here" id="floatingTextarea"></textarea>
 
         {/* <div className="book-content">
           <div className="book-content-header">
