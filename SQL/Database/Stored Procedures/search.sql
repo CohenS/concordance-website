@@ -2,20 +2,27 @@
 -- search words by value
 CREATE  PROCEDURE SearchByValue
 (
-    @wordVlaue varchar(50)
+    @wordValue varchar(50)
 )
 AS
 BEGIN
   SELECT *
-  FROM [dbo].[WordInfo] AS [W]
-  WHERE [W].[Length] == LEN(@wordVlaue)
-  AND [W].[Value] == @wordVlaue
-)
------------------------------------------
+  FROM [WordInfo]
+  LEFT JOIN [Word]
+    ON [WordInfo].[WordID] = [Word].[WordID]
+  WHERE 
+    [Word].[Length] = LEN(@wordValue) AND
+    [Word].[Value] = @wordValue  AND 
+    [WordInfo].[WordID] = [Word].[WordID]
+
+END;
+GO;
+
+
 -- search words by location
-CREATE  PROCEDURE SearchByLocation
+CREATE PROCEDURE SearchByLocation
 (
-    @line   INT,
+    @Line   INT,
     @Paragrath INT,
     @Chapter VARCHAR(max),
     @WordID varchar(max)
@@ -23,24 +30,27 @@ CREATE  PROCEDURE SearchByLocation
 AS
 BEGIN
   SELECT *
-  FROM [dbo].[WordInfo] AS [W]
-  WHERE [W].[Line] == @Line
-  AND [W].[Chapter] == @Chapter
-  AND [W].[WordID] == @WordID
-)
-------------------------------------------
+  FROM [WordInfo] AS [W]
+  WHERE 
+      [W].[Line] = @Line AND
+      [W].[Chapter] = @Chapter AND
+      [W].[WordID] = @WordID
+
+END;
+GO;
+
 -- search words by book
 CREATE  PROCEDURE SearchBybook
 (
-    @BookID   INT,
     @BookName varchar(50)
 )
 AS
 BEGIN
-  SELECT *
-  FROM [dbo].[WordInfo] AS [W]
-  WHERE [W].[Line] == @Line
-  AND [W].[Chapter] == @Chapter
-  AND [W].[Value] == @wordVlaue
-)
-END
+  SELECT [W].*
+  FROM [WordInfo] AS [W]
+  LEFT JOIN [Book] AS [B]
+  ON
+    [B].[BookName] = @BookName
+
+END;
+GO;
