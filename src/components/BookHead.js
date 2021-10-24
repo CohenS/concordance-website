@@ -62,30 +62,23 @@ const BookHead = () => {
     const bookData = parseBookInformation(file)
     const insertBookJson = ({Author: bookData.author, BookName: bookData.Bookname, PublishedDate: bookData.publishedDate, Words: words, Paragraphs:[] })
 
+
     const formData = new FormData();
     try {
       const res = await axios.post(
-        `https://vslrh63ore.execute-api.us-west-2.amazonaws.com/default/`,
+        `https://vslrh63ore.execute-api.us-west-2.amazonaws.com/default/concordance`,
         insertBookJson,
         {
-          headers: {
-          },
-          onUploadProgress: (progressEvent) => {
-            setUploadPercentage(
-              parseInt(
-                Math.round((progressEvent.loaded * 100) / progressEvent.total)
-              )
-            );
-          },
+          headers: { 
+
+          }
         }
       );
 
       // Clear percentage
      
     } catch (err) {
-      if (err.response.status === 500) {
-      } else {
-      }
+      setComment(JSON.stringify(err))
     }
   };
 
