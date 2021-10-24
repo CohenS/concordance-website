@@ -66,11 +66,17 @@ const BookHead = () => {
     const formData = new FormData();
     try {
       const res = await axios.post(
-        `https://vslrh63ore.execute-api.us-west-2.amazonaws.com/default/concordance`,
+        `https://vslrh63ore.execute-api.us-west-2.amazonaws.com/default/concordance/`,
         insertBookJson,
         {
           headers: { 
-
+          'Content-Length': JSON.stringify(insertBookJson).length,
+          'Host': "http://localhost:3000/",
+          'Content-Type' : 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Expose-Headers':'Content-Length',
           }
         }
       );
