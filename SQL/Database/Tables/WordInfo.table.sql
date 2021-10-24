@@ -6,6 +6,7 @@ CREATE TABLE WordInfo
     [WordID]                     INT NOT NULL,
     [Paragraph] INT NOT NULL, 
     [Chapter] INT NOT NULL, 
+    [WordNumber] INT NOT NULL, 
     FOREIGN KEY  (BookID) REFERENCES Book (BookID),
 	FOREIGN KEY  (WordID) REFERENCES Word (WordID)
 );

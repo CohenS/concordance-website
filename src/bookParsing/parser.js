@@ -35,38 +35,47 @@ const textEndMarkers = [
     "We need your donations more than ever!",
     "END OF PROJECT GUTENBERG",
     " End of the Project Gutenberg",
-    " *** END OF THIS PROJECT GUTENBERG"
+    " *** END OF THIS PROJECT GUTENBERG",
 ]
 
-export default parseBookInformation = (book) =>
+export const parseBookInformation = (book) =>
 {
-    const titleRegex = /Title(.*\s*:\s*.*)/
-    const authorRegex = /Author(.*\s*:\s*.*)/
-    const illustratorRegex = /Illustrator(.*\s*:\s*.*)/
-    const releaseDateRegex = /Release Date(.*\s*:\s*.*)/
+    const titleRegex = /Title: (.*)/
+    const authorRegex = /Author: (.*)/
+    const illustratorRegex = /Illustrator: (.*\s*:\s*.*)/
+    const releaseDateRegex = /Release Date: (.*)/
     const languageRegex = /Language(.*\s*:\s*.*)/
     const producedByRegex = /Produced by(.*\s*:\s*.*)/
+
+    const bookName = titleRegex.exec(book)[1];
+    const author = authorRegex.exec(book)[1];
+    const publishedDate = releaseDateRegex.exec(book)[1]
+
+    return ({bookName, author, publishedDate});
+
 }
 
-export default parseWords = (book) =>
+export const parseWords = (book) =>
 {  
-    const chapter1Start = book.lastIndexOf(/Chapter 1\n/);
-    const bookEndIndex = textEndMarkers.map(s => book.findIndex(o => o.i == s)).filter(index => index != -1)[0];
+
+    const ChapterIndex = /Chapter 1[\n\r]*/
+    const chapter1Start = book.lastIndexOf(book.match(ChapterIndex).pop())
+    const bookEndIndex = textEndMarkers.map(s => book.indexOf(s)).filter(index => index != -1)[0];
     const bookChapters = book.substring(chapter1Start, bookEndIndex);
-    
+
     const chapters = bookChapters.split(/Chapter \d*/).filter(x => x != '');
 
     const bookWords = 
         chapters
         .map((c,chapterNumber) => 
-            c.split(/\n\n/).filter(x => x != '')
+            c.trim().split(/\n\n/).filter(x => x != '')
             .map((p,paragraphNumber) => 
-                (p.split(/\n/).filter(x => x != '')
+                (p.trim().split(/\n/).filter(x => x != '')
                 .map((l,lineNumber) => 
-                    (l.trim().split(" ")
-                    .map((w,wordNumber) => ({chapterNumber: chapterNumber, paragraphNumber: paragraphNumber, lineNumber:lineNumber, wordNumber: wordNumber, word:w})))))));
+                    (l.trim().split(" ").filter(x => x != '')
+                    .map((w,wordNumber) => ({chapter: chapterNumber, paragraph: paragraphNumber, line:lineNumber, wordNumber: wordNumber, value:w})))))));
 
-    const words = bookWords.flat(Infinity)
+    const words = bookWords.flat(4)
     return words;
 }
 
@@ -91,7 +100,7 @@ function RomanNumeralToInt(str1) {
     
     for(var i = 1; i < str1.length; i++){
         curr = RomanNumeralCharToInt(str1.charAt(i));
-        pre = char_toRomanNumeralCharToIntint(str1.charAt(i-1));
+        pre = RomanNumeralCharToInt(str1.charAt(i-1));
         if(curr <= pre){
         num += curr;
         } else {
