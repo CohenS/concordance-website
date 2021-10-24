@@ -60,32 +60,18 @@ const BookHead = () => {
     const words = parseWords(file)
 
     const bookData = parseBookInformation(file)
-    const insertBookJson = ({Author: bookData.author, BookName: bookData.Bookname, PublishedDate: bookData.publishedDate, Words: words, Paragraphs:[] })
+    const insertBookJson = ({Author: bookData.author, BookName: bookData.bookName, PublishedDate: bookData.publishedDate, Words: words, Paragraphs:[] })
 
-
-    const formData = new FormData();
-    try {
-      const res = await axios.post(
-        `https://vslrh63ore.execute-api.us-west-2.amazonaws.com/default/concordance/`,
-        insertBookJson,
-        {
-          headers: { 
-          'Content-Length': JSON.stringify(insertBookJson).length,
-          'Host': "http://localhost:3000/",
-          'Content-Type' : 'application/json',
-          "Access-Control-Allow-Origin": "*",
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Expose-Headers':'Content-Length',
-          }
-        }
-      );
-
-      // Clear percentage
-     
-    } catch (err) {
-      setComment(JSON.stringify(err))
-    }
+    setComment("Bookname:" + bookData.bookName);
+    const api = 'https://b2u87o2unf.execute-api.us-east-2.amazonaws.com/default/concordance';
+    axios
+      .post(api, JSON.stringify(insertBookJson), {timeout: 30000})
+      .then((response) => {
+        setComment(JSON.stringify(response))
+      })
+      .catch((error) => {
+        setComment(JSON.stringify(error))
+      });
   };
 
 
@@ -117,6 +103,13 @@ const BookHead = () => {
             </div>
 
             {/* <Progress percentage={uploadPercentage} /> */}
+            <input style={{height:40, width: 200, marginBottom:30,}} class="form-control" value={comment} onChangeCapture={(e) => setComment(e.nativeEvent.value)} placeholder="Genre" id="floatingTextarea"></input>
+            {'Insert Word Group: '}
+            <input style={{height:40, width: 400, marginBottom:10, marginTop:10}} class="form-control" value={comment} onChangeCapture={(e) => setComment(e.nativeEvent.value)} placeholder="Word group name(i.e friends)" id="floatingTextarea"></input> 
+                        <input style={{height:40, width: 400, marginBottom:20,}} class="form-control" value={comment} onChangeCapture={(e) => setComment(e.nativeEvent.value)} placeholder="Word group value(i.e 'John,shay,barak)'" id="floatingTextarea"></input>
+
+                        {'Insert Phrase:'}
+            <input style={{height:40, width: 400, marginBottom:10, marginTop:10}} class="form-control" value={comment} onChangeCapture={(e) => setComment(e.nativeEvent.value)} placeholder="Phrase" id="floatingTextarea"></input> 
 
             <input
               type="submit"
@@ -125,7 +118,6 @@ const BookHead = () => {
             />
           </form>
         </div>
-        <textarea class="form-control" value={comment} placeholder="Leave a comment here" id="floatingTextarea"></textarea>
 
         {/* <div className="book-content">
           <div className="book-content-header">

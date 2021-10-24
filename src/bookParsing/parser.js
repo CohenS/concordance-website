@@ -68,15 +68,14 @@ export const parseWords = (book) =>
     const bookWords = 
         chapters
         .map((c,chapterNumber) => 
-            c.trim().split(/\n\n/).filter(x => x != '')
+            c.trim().split(/\n\n/).filter(x => x != '').filter(e => e.length)
             .map((p,paragraphNumber) => 
-                (p.trim().split(/\n/).filter(x => x != '')
+                (p.trim().split(/\n/).filter(x => x != '').filter(e => e.length)
                 .map((l,lineNumber) => 
                     (l.trim().split(" ").filter(x => x != '')
-                    .map((w,wordNumber) => ({Chapter: chapterNumber, Paragraph: paragraphNumber, Line:lineNumber, WordNumber: wordNumber, Value:w})))))));
+                    .map((w,wordNumber) => w))).filter(e => e.length))));
 
-    const words = bookWords.flat(4)
-    return words;
+    return bookWords;
 }
 
 
