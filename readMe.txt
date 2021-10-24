@@ -2,8 +2,8 @@
 About The Project
 
 concordance system, made as part of university course. this is a JS UI and SQL cloud based DB.
- no need of any presetup or installation, the UI is avilibale at the address:
- https://pensive-spence-70b231.netlify.app
+no need of any presetup or installation, the UI is avilibale at the address:
+https://main.deebi52f4qlrg.amplifyapp.com/search
 
 Features
 
