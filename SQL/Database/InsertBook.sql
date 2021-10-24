@@ -87,7 +87,7 @@ BEGIN
     VALUES (@BookIDFromInsert, @WordCharAvg, @LineCharAvg, @ChapterCharAvg, @ParagraphCharAvg, @BookCharacterCount)
 
 
-    SELECT @@ROWCOUNT AS Output; 
+    SELECT @BookIDFromInsert AS Output; 
 
 
 END;

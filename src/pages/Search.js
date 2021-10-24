@@ -6,8 +6,6 @@ const Search=()=>{
             <h4>Words Filter</h4>
           </div>
         <form className="d-flex flex-row">
-          
-          
           <div className="col-12 border">
             <div className="d-flex flex-column p-3">
               <div class="mb-3">
@@ -24,6 +22,85 @@ const Search=()=>{
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">
                   Parase to be searched
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="col-3 border">
+          <div className="d-flex flex-column p-3">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">
+                    Line
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">
+                    Line Index
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+              </div>
+          </div>
+          <div className="col-3 border">
+            <div className="d-flex flex-column p-3">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">
+                  Sentence
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">
+                  Sentence Index
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="col-3 border">
+            <div className="d-flex flex-column p-3">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">
+                  Paragraph
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">
+                  Word Index
                 </label>
                 <input
                   type="text"

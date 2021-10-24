@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import InsertBook from './pages/InsertBook';
 import ViewWords from './pages/ViewWords';
 import WordGroups from './pages/WordGroups';
+import SearchByPhrase from './pages/SearchByPhrase';
 import Search from './pages/Search';
 import Header from '../src/components/Header';
 import Statistics from './pages/Statistics';
@@ -16,8 +17,9 @@ const App = () => {
         <Switch>
           <div className="app-wrap container">
             <Route exact path="/" component={() => <InsertBook />} />
-            <Route exact path="/view-words" component={() => <ViewWords />} />
+            <Route exact path="/searchbyword" component={() => <ViewWords />} />
             <Route exact path="/word-groups" component={() => <WordGroups />} />
+            <Route exact path="/searchbyphrase" component={() => <SearchByPhrase />} />
             <Route exact path="/search" component={() => <Search />} />
             <Route exact path="/statistics" component={() => <Statistics />} />
           </div>

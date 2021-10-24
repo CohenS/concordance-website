@@ -2,7 +2,7 @@
 -- search words by value
 CREATE  PROCEDURE SearchByValue
 (
-    @wordVlaue varchar(50)
+    @wordValue varchar(50)
 )
 AS
 BEGIN
@@ -11,8 +11,8 @@ BEGIN
   LEFT JOIN [Word]
     ON [WordInfo].[WordID] = [Word].[WordID]
   WHERE 
-    [Word].[Length] = LEN(@wordVlaue) AND
-    [Word].[Value] = @wordVlaue  AND 
+    [Word].[Length] = LEN(@wordValue) AND
+    [Word].[Value] = @wordValue  AND 
     [WordInfo].[WordID] = [Word].[WordID]
 
 END;
