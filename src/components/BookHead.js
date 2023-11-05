@@ -32,8 +32,8 @@ const BookHead = () => {
 
     const bookData = parseBookInformation(file)
     const insertBookJson = ({Author: bookData.author, BookName: bookData.bookName, PublishedDate: bookData.publishedDate, Words: words.BookWords, BookContent: words.BookContent})
-    const insertApiUrl = 'http://localhost:5177/Book/InsertBook';
-    const insertWordGroupurl = 'http://localhost:5177/Book/InsertWordGroup';
+    const insertApiUrl = 'https://concordance-app-20230814001517.braveisland-0812a3d8.eastus.azurecontainerapps.io/Book/InsertBook';
+    const insertWordGroupurl = 'https://concordance-app-20230814001517.braveisland-0812a3d8.eastus.azurecontainerapps.io/Book/InsertWordGroup';
 
     axios
       .post(insertApiUrl, JSON.stringify(insertBookJson),
