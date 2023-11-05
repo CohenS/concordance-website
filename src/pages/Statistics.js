@@ -1,4 +1,29 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 const Statistics = () => {
+
+  const [booksStats, setBooksStats] = useState({});
+
+  const loadBooksStatistics = async () => {
+    const api = `https://concordance-app-20230814001517.braveisland-0812a3d8.eastus.azurecontainerapps.io/BookStatistics/GetAveragetBooksStatistics/`;
+    axios
+      .get(api)
+      .then((response) => {
+        setBooksStats(response.data);
+        console.log(JSON.stringify(response.data))
+      })
+      .catch((error) => {
+        console.log(JSON.stringify(error))
+      });
+  };
+  
+
+  useEffect(()=>{
+    loadBooksStatistics();
+  }, []) // <-- empty dependency array
+
+
   return (
     <div className="d-flex flex-column">
       <div className="d-flex flex-row">
@@ -8,113 +33,65 @@ const Statistics = () => {
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Books</span>
-              <span>Null</span>
+              <span>Total books</span>
+              <span>{booksStats?.totalBooks}</span>
             </li>
             <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Books Size</span>
-              <span>Null</span>
+              <span>Total words</span>
+              <span>{booksStats?.totalWords}</span>
             </li>
             <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Groups</span>
-              <span>Null</span>
+              <span>Total paragraphs</span>
+              <span>{booksStats?.totalParagraphs}</span>
             </li>
+
             <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Avetage Words in Group</span>
-              <span>Null</span>
+              <span>Total chapters</span>
+              <span>{booksStats?.totalChapters}</span>
             </li>
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Phrases</span>
-              <span>Null</span>
-            </li>
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Avarage Words in Phrases</span>
-              <span>Null</span>
-            </li>
+
+            {/* public int TotalBooks { get; set; }
+        public int AvgWordsPerBook { get; set; }
+        public int TotalWords { get; set; }
+        public int AvgLinesPerBook { get; set; }
+        public int TotalParagraphs { get; set; }
+        public int AvgTotalChapters { get; set; }
+        public int TotalChapters { get; set; }	} */}
           </ul>
         </div>
         <div class="card col-6">
           <div className="p-2">
             <h4>Book Statistics</h4>
           </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Words</span>
-              <span>Null</span>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex flex-row justify-content-between">
+              <span>Avarage line characters per book</span>
+              <span>{booksStats?.avgLineCharsPerBook}</span>
             </li>
             <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Unique Words</span>
-              <span>Null</span>
+              <span>Avarage paragraph characters per book</span>
+              <span>{booksStats?.avgParagraphCharsPerBook}</span>
             </li>
             <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Letters</span>
-              <span>Null</span>
+              <span>Avarage chapter characters per book</span>
+              <span>{booksStats?.avgChapterCharsPerBook}</span>
             </li>
             <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Avetage Letters in Word</span>
-              <span>Null</span>
+              <span>Avarage Words per book</span>
+              <span>{booksStats?.avgWordsPerBook}</span>
             </li>
             <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Phrases</span>
-              <span>Null</span>
+              <span>Avarage lines per book</span>
+              <span>{booksStats?.avgLinesPerBook}</span>
             </li>
             <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Avarage Words in Phrases</span>
-              <span>Null</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="d-flex flex-row">
-        <div class="card col-4">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Paragraphs</span>
-              <span>Null</span>
-            </li>
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Average Words in Paragraph</span>
-              <span>Null</span>
-            </li>
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Average Letters in Paragraph</span>
-              <span>Null</span>
-            </li>
-          </ul>
-        </div>
-        <div class="card col-4">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Lines</span>
-              <span>Null</span>
-            </li>
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Average Words in Line</span>
-              <span>Null</span>
-            </li>
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Average Letters in Line</span>
-              <span>Null</span>
-            </li>
-          </ul>
-        </div>
-        <div class="card col-4">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Total Sentences</span>
-              <span>Null</span>
-            </li>
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Average Words in Sentences</span>
-              <span>Null</span>
-            </li>
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Average Letters in Sentences</span>
-              <span>Null</span>
+              <span>Avarage chapters per book</span>
+              <span>{booksStats?.avgTotalChapters}</span>
             </li>
           </ul>
         </div>
       </div>
+
     </div>
   );
 };

@@ -1,42 +1,16 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import {parseBookInformation, parseWords} from "../bookParsing/parser";
+import { SpinnerCircular } from 'spinners-react';
 
-// const handleDrop = files => {
-//   // Push all the axios request promise into a single array
-//   const uploaders = files.map(file => {
-//     // Initial FormData
-//     const formData = new FormData();
-//     formData.append("file", file);
-//     formData.append("tags", `codeinfuse, medium, gist`);
-//     formData.append("upload_preset", "pvhilzh7"); // Replace the preset name with your own
-//     formData.append("api_key", "778788693832211"); // Replace API key with your own Cloudinary key
-//     formData.append("timestamp", (Date.now() / 1000) | 0);
-
-//     // Make an AJAX upload request using Axios (replace Cloudinary URL below with your own)
-//     return axios.post("https://api.cloudinary.com/v1_1/freelanceri/image/upload", formData, {
-//       headers: { "X-Requested-With": "XMLHttpRequest" },
-//     }).then(response => {
-//       const data = response.data;
-//       const fileURL = data.secure_url // You should store this URL for future references in your app
-//       console.log(data);
-//     })
-//   });
-
-//   // Once all the files are uploaded
-//   axios.all(uploaders).then(() => {
-//     // ... perform after upload is successful operation
-//   });
-// }
 
 const BookHead = () => {
   const [file, setFile] = useState("");
   const [filename, setFilename] = useState("Choose File");
-  const [uploadedFile, setUploadedFile] = useState({});
-  const [getBooks, setBooks] = useState([]);
   const [comment, setComment] = useState("");
-  const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [wordGroupName, setWordGroupName] = useState("");
+  const [wordGroupValue, setWordGroupValue] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
 
   const onChange = (e) => {
     const fileReader = new FileReader();
@@ -50,46 +24,51 @@ const BookHead = () => {
     setFilename(e.target.files[0].name);
   };
 
-  const [bookText, setBookText] = useState('');
-  const [words, setWords] = useState('');
-  
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (file) => {
     const words = parseWords(file)
+    console.log(JSON.stringify(words))
 
     const bookData = parseBookInformation(file)
-    const insertBookJson = ({Author: bookData.author, BookName: bookData.bookName, PublishedDate: bookData.publishedDate, Words: words, Paragraphs:[] })
+    const insertBookJson = ({Author: bookData.author, BookName: bookData.bookName, PublishedDate: bookData.publishedDate, Words: words.BookWords, BookContent: words.BookContent})
+    console.log(JSON.stringify(insertBookJson))
+    const insertApiUrl = 'https://concordance-app-20230814001517.braveisland-0812a3d8.eastus.azurecontainerapps.io/Book/InsertBook';
+    const insertWordGroupurl = 'https://concordance-app-20230814001517.braveisland-0812a3d8.eastus.azurecontainerapps.io/Book/InsertWordGroup';
 
-    setComment("Bookname:" + bookData.bookName);
-    const api = 'https://b2u87o2unf.execute-api.us-east-2.amazonaws.com/default/concordance';
+    setIsUploading(true);
     axios
-      .post(api, JSON.stringify(insertBookJson), {timeout: 30000})
+      .post(insertApiUrl, JSON.stringify(insertBookJson),
+       {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
       .then((response) => {
-        setComment(JSON.stringify(response))
+        if (wordGroupName.length > 0 && wordGroupValue.length > 0)
+        {
+          console.log("uploading word groups")
+          const wordGroupWords = wordGroupValue.split(',')
+          const insertWordGroupJson = ({BookID: response.data, WordGroupName: wordGroupName, WordGroupWords: wordGroupWords})
+        
+        return axios
+          .post(insertWordGroupurl, JSON.stringify(insertWordGroupJson),
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+        }
       })
       .catch((error) => {
-        setComment(JSON.stringify(error))
+        console.log(JSON.stringify(error))
       });
   };
 
-
-  useEffect(() => {
-    axios.get(`http://localhost:8081/api/files/${5}`).then((response) => {
-     setBooks(response.data);
-     let textarea = document.querySelector('textarea');
-     const lines = response.data.split();
-     textarea.value = lines.join('');
-     console.log(response.data)
-    });
-  }, [0]);
   return (
     <div className="book-head">
       <div className="book-head-container container">
         <div className="book-header container">
           <h4>INSERT NEW BOOK</h4>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={() => onSubmit(file)}>
             <div className="custom-file mb-4">
               <input
                 type="file"
@@ -103,19 +82,31 @@ const BookHead = () => {
             </div>
 
             {/* <Progress percentage={uploadPercentage} /> */}
-            <input style={{height:40, width: 200, marginBottom:30,}} class="form-control" value={comment} onChangeCapture={(e) => setComment(e.nativeEvent.value)} placeholder="Genre" id="floatingTextarea"></input>
+            <input style={{height:40, width: 200, marginBottom:30,}} className="form-control" value={comment} onChange={(e) => setComment(e.nativeEvent.value)} placeholder="Genre" id="floatingTextarea"></input>
             {'Insert Word Group: '}
-            <input style={{height:40, width: 400, marginBottom:10, marginTop:10}} class="form-control" value={comment} onChangeCapture={(e) => setComment(e.nativeEvent.value)} placeholder="Word group name(i.e friends)" id="floatingTextarea"></input> 
-                        <input style={{height:40, width: 400, marginBottom:20,}} class="form-control" value={comment} onChangeCapture={(e) => setComment(e.nativeEvent.value)} placeholder="Word group value(i.e 'John,shay,barak)'" id="floatingTextarea"></input>
-
-                        {'Insert Phrase:'}
-            <input style={{height:40, width: 400, marginBottom:10, marginTop:10}} class="form-control" value={comment} onChangeCapture={(e) => setComment(e.nativeEvent.value)} placeholder="Phrase" id="floatingTextarea"></input> 
-
-            <input
-              type="submit"
-              value="Upload"
-              className="btn btn-primary btn-block mt-4"
-            />
+            <input style={{height:40, width: 400, marginBottom:10, marginTop:10}} 
+                className="form-control" 
+                value={wordGroupName}
+                onChange={(e) => setWordGroupName(e.target.value)}
+                placeholder="Word group name(i.e friends)" id="floatingTextarea">
+            </input> 
+            <input style={{height:40, width: 400, marginBottom:20,}} 
+              className="form-control" 
+              value={wordGroupValue} 
+              onChange={(e) => setWordGroupValue(e.target.value)} 
+              placeholder="Word group value(i.e 'John,shay,barak)'"
+              id="floatingTextarea">
+            </input>
+            {isUploading 
+              ? 
+                <SpinnerCircular/>
+              :
+              <input
+                type="submit"
+                defaultValue="Upload"
+                className="btn btn-primary btn-block mt-4"
+              />
+          }
           </form>
         </div>
 

@@ -1,13 +1,3 @@
-const exampleBook = `Chapter 1
-
-      It is a truth universally acknowledged, that a single man in
-      possession of a good fortune, must be in want of a wife.
-
-Chapter 2
-      Mr. Bennet was so odd a mixture of quick parts, sarcastic humour,
-      reserve, and caprice, that the experience of three-and-twenty`
-
-
 
 const textEndMarkers = [
     "*** END OF THE PROJECT GUTENBERG",
@@ -40,42 +30,61 @@ const textEndMarkers = [
 
 export const parseBookInformation = (book) =>
 {
-    const titleRegex = /Title: (.*)/
-    const authorRegex = /Author: (.*)/
-    const illustratorRegex = /Illustrator: (.*\s*:\s*.*)/
-    const releaseDateRegex = /Release Date: (.*)/
-    const languageRegex = /Language(.*\s*:\s*.*)/
-    const producedByRegex = /Produced by(.*\s*:\s*.*)/
+    const titleRegex = /Title: (.*)/i
+    const authorRegex = /Author: (.*)[\r\n]*(.*)[\r\n]/i
+    // const illustratorRegex = /Illustrator: (.*\s*:\s*.*)/
+    const releaseDateRegex = /Release Date: (.*)/i
+    // const languageRegex = /Language(.*\s*:\s*.*)/
+    // const producedByRegex = /Produced by(.*\s*:\s*.*)/
 
     const bookName = titleRegex.exec(book)[1];
+    console.log("got bookName")
+    console.log(bookName)
+
     const author = authorRegex.exec(book)[1];
+    console.log("got author")
+    console.log(author)
     const publishedDate = releaseDateRegex.exec(book)[1]
 
     return ({bookName, author, publishedDate});
 
 }
 
-export const parseWords = (book) =>
-{  
+export const parseWords = (book) => {
+    const ChapterIndex = /Chapter 1[\n\r]*/i
+    const matches = book.match(ChapterIndex)
+    const romanChapterStartRegex = /Chapter I\.?[\n\r]*/i
 
-    const ChapterIndex = /Chapter 1[\n\r]*/
-    const chapter1Start = book.lastIndexOf(book.match(ChapterIndex).pop())
-    const bookEndIndex = textEndMarkers.map(s => book.indexOf(s)).filter(index => index != -1)[0];
+    const chapter1Start = matches != null
+        ? book.lastIndexOf(book.match(ChapterIndex).pop()) 
+        : book.lastIndexOf(book.match(romanChapterStartRegex).pop())
+
+    const bookEndIndex = textEndMarkers.map(s => book.indexOf(s)).filter(index => index !== -1)[0];
     const bookChapters = book.substring(chapter1Start, bookEndIndex);
 
-    const chapters = bookChapters.split(/Chapter \d*/).filter(x => x != '');
-
+    const chapters = matches != null
+        ? bookChapters.split(/Chapter \d*[\n\r]*/i).filter(x => x !== '') 
+        : bookChapters.split(/Chapter \d*\.?[\n\r]*/i).filter(x => x !== '') ;
     const bookWords = 
         chapters
         .map((c,chapterNumber) => 
-            c.trim().split(/\n\n/).filter(x => x != '').filter(e => e.length)
+            c.trim().split(/\r\n\r\n/).filter(x => x != '').filter(e => e.length)
             .map((p,paragraphNumber) => 
-                (p.trim().split(/\n/).filter(x => x != '').filter(e => e.length)
+                (p.trim().split(/\r\n/).filter(x => x != '').filter(e => e.length)
                 .map((l,lineNumber) => 
                     (l.trim().split(" ").filter(x => x != '')
-                    .map((w,wordNumber) => w))).filter(e => e.length))));
 
-    return bookWords;
+                     .map((w,wordNumber) =>
+                      ({
+                         Chapter: chapterNumber + 1,
+                         Paragraph: paragraphNumber + 1,
+                         Line: lineNumber + 1,
+                         WordNumber: wordNumber + 1,
+                         WordValue:w
+                        }))))))).flat(4);
+
+    return {BookWords: bookWords, BookContent: bookChapters};
+
 }
 
 
@@ -92,21 +101,21 @@ function RomanNumeralCharToInt(c){
     }
 }
 
-function RomanNumeralToInt(str1) {
-    if(str1 == null) return -1;
-    var num = RomanNumeralCharToInt(str1.charAt(0));
-    var pre, curr;
+// function RomanNumeralToInt(str1) {
+//     if(str1 == null) return -1;
+//     var num = RomanNumeralCharToInt(str1.charAt(0));
+//     var pre, curr;
     
-    for(var i = 1; i < str1.length; i++){
-        curr = RomanNumeralCharToInt(str1.charAt(i));
-        pre = RomanNumeralCharToInt(str1.charAt(i-1));
-        if(curr <= pre){
-        num += curr;
-        } else {
-        num = num - pre*2 + curr;
-        }
-    }
+//     for(var i = 1; i < str1.length; i++){
+//         curr = RomanNumeralCharToInt(str1.charAt(i));
+//         pre = RomanNumeralCharToInt(str1.charAt(i-1));
+//         if(curr <= pre){
+//         num += curr;
+//         } else {
+//         num = num - pre*2 + curr;
+//         }
+//     }
     
-    return num;
-    }
+//     return num;
+//     }
     

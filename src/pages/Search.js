@@ -1,4 +1,4 @@
-const Search=()=>{
+const Search = () => {
     return(
         <div className="view-words">
       <div className="view-words-container">
@@ -116,9 +116,7 @@ const Search=()=>{
       <div className="view-words-container">
         <div className="d-flex flex-row">
           <div className="col-12 border">
-            <div className="results-filter p-2">
-              <h5>Results</h5>
-            </div>
+
             <div className="border-bottom">
               <table class="table table-striped">
                 <thead>
