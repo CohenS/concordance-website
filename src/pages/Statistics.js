@@ -49,6 +49,10 @@ const Statistics = () => {
               <span>Total chapters</span>
               <span>{booksStats?.totalChapters}</span>
             </li>
+            <li class="list-group-item d-flex flex-row justify-content-between">
+              <span>Avarage chapters per book</span>
+              <span>{booksStats?.avgTotalChapters}</span>
+            </li>
 
             {/* public int TotalBooks { get; set; }
         public int AvgWordsPerBook { get; set; }
@@ -83,10 +87,6 @@ const Statistics = () => {
             <li class="list-group-item d-flex flex-row justify-content-between">
               <span>Avarage lines per book</span>
               <span>{booksStats?.avgLinesPerBook}</span>
-            </li>
-            <li class="list-group-item d-flex flex-row justify-content-between">
-              <span>Avarage chapters per book</span>
-              <span>{booksStats?.avgTotalChapters}</span>
             </li>
           </ul>
         </div>
