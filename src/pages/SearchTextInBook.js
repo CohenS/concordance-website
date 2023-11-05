@@ -3,7 +3,6 @@ import axios from "axios";
 import { useDebounce } from 'use-debounce';
 import { useParams } from 'react-router-dom'
 import { SpinnerCircular } from 'spinners-react';
-import { useInView } from 'react-intersection-observer';
 import "./ViewWords.css";
 import ReactiveButton from 'reactive-button';
 
@@ -60,10 +59,6 @@ export default function SearchTextInBook() {
     }
   }, []);
 
-  const { ref, inView, entry } = useInView({
-    /* Optional options */
-    threshold: 0,
-  });
 
   const [triggerSearchRender, setTriggerSearchRender] = useState(0);
 
