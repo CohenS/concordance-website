@@ -24,17 +24,17 @@ const BookHead = () => {
     setFilename(e.target.files[0].name);
   };
 
-  const onSubmit = async (file) => {
+  const onSubmit = async (e,file) => {
+    e.preventDefault();
+    setIsUploading(true);
+
     const words = parseWords(file)
-    console.log(JSON.stringify(words))
 
     const bookData = parseBookInformation(file)
     const insertBookJson = ({Author: bookData.author, BookName: bookData.bookName, PublishedDate: bookData.publishedDate, Words: words.BookWords, BookContent: words.BookContent})
-    console.log(JSON.stringify(insertBookJson))
-    const insertApiUrl = 'https://concordance-app-20230814001517.braveisland-0812a3d8.eastus.azurecontainerapps.io/Book/InsertBook';
-    const insertWordGroupurl = 'https://concordance-app-20230814001517.braveisland-0812a3d8.eastus.azurecontainerapps.io/Book/InsertWordGroup';
+    const insertApiUrl = 'http://localhost:5177/Book/InsertBook';
+    const insertWordGroupurl = 'http://localhost:5177/Book/InsertWordGroup';
 
-    setIsUploading(true);
     axios
       .post(insertApiUrl, JSON.stringify(insertBookJson),
        {
@@ -57,10 +57,14 @@ const BookHead = () => {
             }
           })
         }
-      })
+      }).
+      then(_ => { setIsUploading(false); }
+      )
       .catch((error) => {
+        setIsUploading(false);
         console.log(JSON.stringify(error))
       });
+
   };
 
   return (
@@ -68,7 +72,7 @@ const BookHead = () => {
       <div className="book-head-container container">
         <div className="book-header container">
           <h4>INSERT NEW BOOK</h4>
-          <form onSubmit={() => onSubmit(file)}>
+          <form onSubmit={(e) => onSubmit(e,file)}>
             <div className="custom-file mb-4">
               <input
                 type="file"
@@ -106,7 +110,7 @@ const BookHead = () => {
                 defaultValue="Upload"
                 className="btn btn-primary btn-block mt-4"
               />
-          }
+            }
           </form>
         </div>
 
