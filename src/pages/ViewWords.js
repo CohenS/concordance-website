@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-<<<<<<< HEAD
+
 import { useHistory } from "react-router-dom";
 import "./ViewWords.css";
 import ReactiveButton from 'reactive-button';
@@ -8,7 +8,6 @@ import ReactiveButton from 'reactive-button';
 const ViewWords = () => {
   
   const [searchWord, setSearchWord] = useState("");
-<<<<<<< HEAD
   const [searchResults, setSearchResults] = useState([]);
 
   const history = useHistory();
