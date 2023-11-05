@@ -1,0 +1,22 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/newsql/.vs/concordance-sql/FileContentIndex
+/newsql/.vs/concordance-sql/v17
+/newsql/Database/obj/Debug
+/newsql/Database/bin/Debug
+/node_modules
+/SQL/.vs/concordance-database/FileContentIndex
+/SQL/.vs/concordance-database/v17/.suo
+/SQL/.vs/concordance-database/v17
+/SQL/.vs/ProjectSettings.json
+/SQL/.vs/SQL/v16/.suo
+/SQL/.vs/VSWorkspaceState.json
+/SQL/.vs/concordance-database/v16/.suo
+/SQL/.vs/slnx.sqlite
+/SQL/.vs/ProjectSettings.json
+/SQL/.vs/SQL/v16/.suo
+/SQL/.vs/VSWorkspaceState.json
+/SQL/.vs/concordance-database/v16/.suo
+/SQL/.vs/slnx.sqlite
