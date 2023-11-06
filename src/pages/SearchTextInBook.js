@@ -64,7 +64,7 @@ export default function SearchTextInBook() {
   useEffect(() => {
     const matchIndex = matches[searchIndex]?.i;
     if (matchIndex && matchIndex !== 0 ) document.getElementById(matchIndex)?.scrollIntoView({  });
-  }, [searchIndex, triggerSearchRender,i]);
+  }, [searchIndex, triggerSearchRender]);
   
   
   const handleSFChange = (value) => {
