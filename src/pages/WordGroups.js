@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import "./ViewWords.css";
@@ -72,8 +72,8 @@ const WordGroups = () => {
                       <tr onClick={() => 
                       {
                         const searchIndex = searchResults
-                          ?.filter((searchResult) => searchResult.bookName == r.bookName && searchResult.value == r.value) 
-                          ?.findIndex(v=> v == r);
+                          ?.filter((searchResult) => searchResult.bookName === r.bookName && searchResult.value === r.value) 
+                          ?.findIndex(v=> v === r);
                         history.push(`/searchTextInBook/${r.bookName}/${r.value}/${searchIndex}`)}
                       }>   
                         <th scope="row">{i}</th>

@@ -68,11 +68,11 @@ export const parseWords = (book) => {
     const bookWords = 
         chapters
         .map((c,chapterNumber) => 
-            c.trim().split(/\r\n\r\n/).filter(x => x != '').filter(e => e.length)
+            c.trim().split(/\r\n\r\n/).filter(x => x !== '').filter(e => e.length)
             .map((p,paragraphNumber) => 
-                (p.trim().split(/\r\n/).filter(x => x != '').filter(e => e.length)
+                (p.trim().split(/\r\n/).filter(x => x !== '').filter(e => e.length)
                 .map((l,lineNumber) => 
-                    (l.trim().split(" ").filter(x => x != '')
+                    (l.trim().split(" ").filter(x => x !== '')
 
                      .map((w,wordNumber) =>
                       ({
@@ -88,18 +88,18 @@ export const parseWords = (book) => {
 }
 
 
-function RomanNumeralCharToInt(c){
-    switch (c){
-    case 'I': return 1;
-    case 'V': return 5;
-    case 'X': return 10;
-    case 'L': return 50;
-    case 'C': return 100;
-    case 'D': return 500;
-    case 'M': return 1000;
-    default: return -1;
-    }
-}
+// function RomanNumeralCharToInt(c){
+//     switch (c){
+//     case 'I': return 1;
+//     case 'V': return 5;
+//     case 'X': return 10;
+//     case 'L': return 50;
+//     case 'C': return 100;
+//     case 'D': return 500;
+//     case 'M': return 1000;
+//     default: return -1;
+//     }
+// }
 
 // function RomanNumeralToInt(str1) {
 //     if(str1 == null) return -1;

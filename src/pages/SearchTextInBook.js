@@ -56,7 +56,7 @@ export default function SearchTextInBook() {
       setSearch(inputSearchTerm);          
       setSearchIndex(parseInt(inputSearchIndex))
     }
-  });
+  }, [inputBookName, inputSearchTerm, inputSearchIndex]);
 
 
   const [triggerSearchRender, setTriggerSearchRender] = useState(0);
@@ -64,7 +64,7 @@ export default function SearchTextInBook() {
   useEffect(() => {
     const matchIndex = matches[searchIndex]?.i;
     if (matchIndex && matchIndex !== 0 ) document.getElementById(matchIndex)?.scrollIntoView({  });
-  }, [searchIndex, triggerSearchRender]);
+  }, [searchIndex, triggerSearchRender,i]);
   
   
   const handleSFChange = (value) => {
@@ -76,7 +76,7 @@ export default function SearchTextInBook() {
   const [bookName, setBookName] = useState("");  
   const [bookContent, setBookContent] = useState("");
 
-  const parts = search  == '  ' ? [bookContent] : bookContent.split(new RegExp(`(${search})`, 'gi'));
+  const parts = search  === '  ' ? [bookContent] : bookContent.split(new RegExp(`(${search})`, 'gi'));
   const matches = parts
     .map((part, i) => ({
       part: part,
@@ -150,7 +150,7 @@ export default function SearchTextInBook() {
           <span>
           {parts.map((part, i) => {
             const isMatch = part.toLowerCase() === search.toLowerCase();
-            const isSelectedMatch = (isMatch && i == matches[Math.min(Math.max(searchIndex, 0), matches.length)]?.i);
+            const isSelectedMatch = (isMatch && i === matches[Math.min(Math.max(searchIndex, 0), matches.length)]?.i);
 
                 return isSelectedMatch ?
                 (<SelectedMatch i={i} part={part}/>)
