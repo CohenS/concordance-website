@@ -57,9 +57,8 @@ const BookHead = () => {
             }
           })
         }
-      }).
-      then(_ => { setIsUploading(false); }
-      )
+      })
+      .then(_ => { setIsUploading(false); })
       .catch((error) => {
         setIsUploading(false);
         console.log(JSON.stringify(error))
