@@ -55,14 +55,14 @@ export const parseWords = (book) => {
     const matches = book.match(ChapterIndex)
     const romanChapterStartRegex = /Chapter I\.?[\n\r]*/i
 
-    const chapter1Start = matches != null
+    const chapter1Start = matches !== null
         ? book.lastIndexOf(book.match(ChapterIndex).pop()) 
         : book.lastIndexOf(book.match(romanChapterStartRegex).pop())
 
     const bookEndIndex = textEndMarkers.map(s => book.indexOf(s)).filter(index => index !== -1)[0];
     const bookChapters = book.substring(chapter1Start, bookEndIndex);
 
-    const chapters = matches != null
+    const chapters = matches !== null
         ? bookChapters.split(/Chapter \d*[\n\r]*/i).filter(x => x !== '') 
         : bookChapters.split(/Chapter \d*\.?[\n\r]*/i).filter(x => x !== '') ;
     const bookWords = 

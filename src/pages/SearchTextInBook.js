@@ -63,12 +63,12 @@ export default function SearchTextInBook() {
 
   useEffect(() => {
     const matchIndex = matches[searchIndex]?.i;
-    if (matchIndex && matchIndex != 0 ) document.getElementById(matchIndex)?.scrollIntoView({  });
+    if (matchIndex && matchIndex !== 0 ) document.getElementById(matchIndex)?.scrollIntoView({  });
   }, [searchIndex, triggerSearchRender]);
   
   
   const handleSFChange = (value) => {
-    if (value != ' ' && value.length != 0)
+    if (value !== ' ' && value.length !== 0)
       setSearchBoxValue(value);
     else setSearchBoxValue('  ');
   };

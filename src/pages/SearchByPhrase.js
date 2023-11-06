@@ -76,8 +76,8 @@ const ViewWords = () => {
                   {searchResults.map((r, i)=> 
                       <tr onClick={() => {
                         const searchIndex = searchResults
-                        ?.filter((r) => r.bookName == r.bookName)
-                        ?.findIndex(v => v == r);
+                        ?.filter((r) => r.bookName === r.bookName)
+                        ?.findIndex(v => v === r);
                         history.push(`/searchTextInBook/${r.bookName}/${searchPhrase}/${searchIndex}`)}
                       }>
                         <th scope="row">{i}</th>
