@@ -56,7 +56,7 @@ export default function SearchTextInBook() {
       setSearch(inputSearchTerm);          
       setSearchIndex(parseInt(inputSearchIndex))
     }
-  }, []);
+  });
 
 
   const [triggerSearchRender, setTriggerSearchRender] = useState(0);
